@@ -1,83 +1,118 @@
-"""1. Cotización:
-o Debe ofrecer los tratamientos disponibles.
-o Debe calcular el total de la cotización, además debe consultar si tiene descuento y aplicarlo si corresponde.
-o Desplegar el total de la cotización e indicar el valor de las cuotas mensuales
-2. Renunciar:
-o Debe permitir eliminar la cotización echa anteriormente, volver al menú y permitir realizar una nueva cotización.
-3. Salir del programa sin considerar la cotización que se pueda haber ingresado."""
+import sys
 
-mi_lista=["a","b","c","d,","e","1","2","3","4","5"]
-precio=0
-menos=["a","b","c","e"]
-while True:
+
+def valida_num(num,texto):
+    while True:
+        try:
+            num=int(input(texto))
+            return num
+        except ValueError:
+            print("error debe ser un numero entero")    
+def valida_rut(dato,texto,largo=None) : 
+    while True:
+        dato=str(input(texto))  
+        if len(dato)==9:
+            print(texto)
+            print("rut aceptado")  
+            return dato
+        else:
+            print("error al ingresar el rut")         
+
+def valida_nombre(dato,texto,largo=None) : 
+    while True:
+        dato=str(input(texto))  
+        if len(dato)>2:
+            print(texto)  
+            return dato
+        else:
+            print("error al ingresar el rut")      
+def valida_año(dato,texto) : 
+    while True:
+        dato=int(input(texto))  
+        if dato>1943:
+            print(texto)  
+            return dato
+        else:
+            print("error al ingresar año")   
+def valida_categoria(dato,texto) : 
+    while True:
+        dato=str(input(texto))  
+        if dato== "oro"or dato=="plata" or dato=="bronce":
+            print(texto)  
+            return dato
+        else:
+            print("error al ingresar categoria")
+
+
+def valida_correo(correo,texto):
+
+    correo=input(texto)
+    return correo
+
+    pass        
+def pedir_datos(rut=None,fecha_nacimiento=None,nombre=None,nombre_pareja=None,categoria=None,correo=None):
+    rut=valida_rut(rut,"ingrese su rut ")
+    fecha_nacimiento=valida_año(fecha_nacimiento,"ingrese año de nacimiento no puede ser menosr a 1944 ")
+    nombre=valida_nombre(nombre,"ingrsese su nombre y apellido ")
+    nombre_pareja=valida_nombre(nombre_pareja,"ingrese el nombre de la pareja ")
+    categoria=valida_categoria(categoria,"ingrese  su categoria solo oro plata o bronce ")
+    correo=valida_correo(correo,"ingrese su correo")
+    guardar(rut,fecha_nacimiento,nombre,nombre_pareja,categoria,correo)
+    menu()
+
+
+def guardar(valor1,valor2,valor3,valor4,valor5,valor6) : 
     
-    
-    
-    print("a.para cotizar")
-    print("b.salir")
-    
-    cotiza=str(input("ingrese su opcion para cotizar")).lower()
-    
-    if cotiza in mi_lista:
+    jugadores={}
+    todos_datos=[valor2,valor3,valor4,valor5,valor6]
+    jugadores[valor1]=todos_datos
+    buscar_jugador(jugadores)
+    imprimir_parejas(jugadores)
+
+
+
+    buscar=input("ingrese el rut del jugador que desea buscar")
+
+    if buscar in jugadores:
+        encontrado=jugadores[buscar]
+        print(encontrado)
+        for i in encontrado:
+            print(i)
+            menu()
+
+
+def buscar_jugador(valor1=None,valor2=None):
+    jugadores={}
+    buscar=input("ingrese el rut del jugador que desea buscar")
+
+    if buscar in jugadores:
+        encontrado=jugadores[buscar]
+        for i in encontrado:
+            print(i)
+            menu()
+
+def imprimir_parejas(valor1=None):
+    jugadores=[valor1]
+    for i in jugadores:
+        print(i)
+        menu()
+
+
+
+def menu(opc=None):
+    opc=valida_num(opc,"ingrese su opcion 1/para ingresar datos/2 buscar jugador/3 imprimir parejas/4 salir")
+    if opc==1:
+        print("guardar")
+        pedir_datos()
+    elif opc==2:
+        print("buscar")
+        buscar_jugador()
+    elif opc==3:
+        print("imprimir parejas")
+        imprimir_parejas()
         
-        while True:    
-            if cotiza=="a":
-                print("1.Carillas Porcelana $250.000")    
-                print("2. Implantes Dentales  $475.000")
-                print("3.Ortodoncia Brackets$800.000")
-                print("4.borrar cotizacion")
-                print("5.salir")
-                opc=str(input("ingrese su opcion"))
-                
-                
-                if opc in mi_lista:
-                    
-                    
-                    
-                    if opc=="1":
-                                        
-                        precio+=250000
-                    elif opc=="2":
-                        precio+=475000
+    elif opc==4:
+        print ("saliendo") 
+        sys.exit()  
 
-                    elif opc=="":
-                                precio+=800000 
-                    elif opc=="4":
-                                #borra cotizacion 
-                                precio=0
-                                
-                    elif  opc=="5":
-                                print("a.Trabajador Auxiliar 15% descuento")
-                                print("b.Trabajador Administrativo 10% descuento")
-                                print("c.Trabajador Docente 5% descuento" )
-                                print("d..salir")
-                                menos=str(input("ingrese opcion")).lower()
-                                if menos in mi_lista:
-                                    if menos=="a":
-                                        descuento=precio*0.15
-                                        total=precio-descuento
-                                                
-                                    elif menos=="b":
-                                        descuento=precio*0.10
-                                        total=precio-descuento
-                                        break
-                                            
-                                            
-                                    elif descuento=="c":
-                                        descuento=precio*0.05
-                                        total=precio-descuento
-                                            
-                                            
-                                            
-                                    elif opc=="d":
-                                                
-                                        cuota=total/12
-                                        print(f"su cuota mensual es de {cuota}")
-                                        print(f"{total}")
-                                        print(f"{descuento}")
-            elif cotiza=="b":
-                        print(" hasta pronto")
-                        break 
-
-            else:
-                print("opcion invalida solo a o b")              
+menu()
